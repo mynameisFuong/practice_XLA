@@ -1,0 +1,14 @@
+video_id,label,local_path,dummy_score,logistic_score,extra_trees_score,predicted
+Normal_Videos_904_x264,0,data/videos/Normal_Videos_904_x264.mp4,0.5,0.7555721,0.6342651515151514,1
+Normal_Videos_059_x264,0,data/videos/Normal_Videos_059_x264.mp4,0.5,0.23693319,0.25892171717171714,0
+Normal_Videos_901_x264,0,data/videos/Normal_Videos_901_x264.mp4,0.5,0.82279956,0.5465079365079364,1
+Normal_Videos_899_x264,0,data/videos/Normal_Videos_899_x264.mp4,0.5,0.031947196,0.22300841750841746,0
+Normal_Videos_905_x264,0,data/videos/Normal_Videos_905_x264.mp4,0.5,0.8402663,0.6549769119769119,1
+Normal_Videos_879_x264,0,data/videos/Normal_Videos_879_x264.mp4,0.5,0.050007626,0.44451190476190483,0
+Normal_Videos_641_x264,0,data/videos/Normal_Videos_641_x264.mp4,0.5,0.0069855857,0.20871981721981722,0
+Normal_Videos_915_x264,0,data/videos/Normal_Videos_915_x264.mp4,0.5,0.82148886,0.6628571428571428,1
+Stealing062_x264,1,data/videos/Stealing062_x264.mp4,0.5,0.6136714,0.6345873015873016,1
+Stealing019_x264,1,data/videos/Stealing019_x264.mp4,0.5,0.07711522,0.4564395141895143,0
+Stealing036_x264,1,data/videos/Stealing036_x264.mp4,0.5,0.7645274,0.6754977152477154,1
+Stealing058_x264,1,data/videos/Stealing058_x264.mp4,0.5,0.85314935,0.5102329244829246,1
+Stealing079_x264,1,data/videos/Stealing079_x264.mp4,0.5,0.09440108,0.4798852813852814,0

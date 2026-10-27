@@ -1,0 +1,23 @@
+{
+  "startup": true,
+  "synthetic_inference": true,
+  "resident_view": true,
+  "prediction": {
+    "video": "loitering_then_move.mp4",
+    "model": "extra_trees",
+    "threshold": 0.5,
+    "video_score": 0.6582705627705626,
+    "quality_ok": true,
+    "decision": "review",
+    "info": {
+      "fps": 8.0,
+      "frames": 160,
+      "duration": 20.0,
+      "width": 640,
+      "height": 360
+    },
+    "mode": "sampled",
+    "warning": "Điểm nghi vấn chưa hiệu chuẩn; mốc thời gian chỉ để xem xét, chưa được kiểm định định vị hành vi.",
+    "elapsed_seconds": 1.664
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "archive_extract": true,
+  "offline_cached_training": true,
+  "test_metrics_identical": true,
+  "pytest_passed": 5,
+  "synthetic_inference": true
+}

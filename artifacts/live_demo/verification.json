@@ -1,0 +1,12 @@
+{
+  "pytest_passed": 9,
+  "dependency_check": "pip check passed",
+  "source": "Tuổi Trẻ external video; not training data",
+  "processed_frames": 357,
+  "elapsed_seconds": 17.886,
+  "frames_with_people": 126,
+  "review_frames": 0,
+  "output_codec": "h264",
+  "app_test": "VOH preview + 239 frame streaming + H264 final result succeeded",
+  "scope": "Person detection/tracking and causal scene scores; no evaluated person-level theft classifier."
+}

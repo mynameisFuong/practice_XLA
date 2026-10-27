@@ -1,0 +1,7 @@
+{
+  "repo": "mteb/ucf-crime",
+  "revision": "8d783bb",
+  "seed": 42,
+  "selection": "Seed 42 random by class within official split; <=30 MB except keep all five official test Stealing videos; train20 val5 test8Normal5Stealing",
+  "license": "Upstream mirror has no explicit license grant. Research provenance retained; raw videos excluded from submission archive."
+}

@@ -1,0 +1,5 @@
+-r requirements.txt
+reportlab>=4.2,<6
+beautifulsoup4>=4.12,<5
+pypdf>=5,<8
+pypdfium2>=4,<6

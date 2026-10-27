@@ -1,0 +1,28 @@
+[
+  {
+    "id": "a1bcB0_RMiQ",
+    "title": "Camera Ghi Hình Bãi Giữ Xe Ban Đêm Quán Cháo Cối MT68",
+    "duration": 292,
+    "uploader": "Camera An Ninh 365 OFFICIAL",
+    "upload_date": "20190808",
+    "url": "https://www.youtube.com/watch?v=a1bcB0_RMiQ",
+    "local_path": "data/external_test/youtube_a1bcB0_RMiQ.mp4",
+    "label": "presumed_normal_requires_review",
+    "split": "external_holdout",
+    "note": "User supplied after v2 training; outdoor parking, not apartment basement; not for training or threshold selection",
+    "sha256": "bbc3de1827529a8edc7d76f4b130f7f6aa78da4e66c2be003519332213e236b2"
+  },
+  {
+    "id": "5BSCCBLD-_M",
+    "title": "Lắp Đặt Camera Quan Sát Bãi Giữ Xe  -  KAMERA",
+    "duration": 59,
+    "uploader": "KAMERA HIKVISION",
+    "upload_date": "20190116",
+    "url": "https://www.youtube.com/watch?v=5BSCCBLD-_M",
+    "local_path": "data/external_test/youtube_5BSCCBLD-_M.mp4",
+    "label": "presumed_normal_requires_review",
+    "split": "external_holdout",
+    "note": "User supplied after v2 training; outdoor parking, not apartment basement; not for training or threshold selection",
+    "sha256": "d2772ba970031f35f9d0da13231a3f294e23233f605fbfd5997d3092c2da7240"
+  }
+]

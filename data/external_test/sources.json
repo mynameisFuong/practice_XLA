@@ -1,0 +1,20 @@
+[
+  {
+    "file": "data/external_test/tuoitre_ham_chung_cu_20230731.mp4",
+    "article": "https://tuoitre.vn/video/toan-bo-dien-bien-nghi-pham-dot-nhap-ham-chung-cu-trom-xe-may-146486.htm",
+    "media_url": "https://cdn2.tuoitre.vn/471584752817336320/2023/7/31/trom-xe-may-chung-cu-169077985317350842379.mp4",
+    "publisher": "Tuổi Trẻ",
+    "published": "2023-07-31",
+    "sha256": "cd89cbf55c51cf25e0ad6da690a63e7ec99891d8e6b789d5704c79f84881a887",
+    "purpose": "external exploratory test only; not training or validation; news-edited footage, not a benchmark dataset"
+  },
+  {
+    "file": "data/external_test/voh_orchard_parkview_20191008.mp4",
+    "article": "https://voh.com.vn/phap-luat/truy-bat-ke-trom-xe-may-vuot-barie-tau-thoat-o-chung-cu-tphcm-337453.html",
+    "media_url": "https://data.voh.com.vn/uploads/video/2019/10/08/ClipketromxemayvuotbarietauthoattruocmatbaovetrongchungcuoTPHCM_20191008114349.mp4",
+    "publisher": "VOH; clip credited SGGP in article",
+    "published": "2019-10-08",
+    "sha256": "592a131ee67e3a4759666d8e88be54a802b053aaca30b7924514c7151debd4f0",
+    "purpose": "external exploratory test only; not training or validation"
+  }
+]

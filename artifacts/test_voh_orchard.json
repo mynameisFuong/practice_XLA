@@ -1,0 +1,124 @@
+{
+  "video": "voh_orchard_parkview_20191008.mp4",
+  "model": "extra_trees",
+  "threshold": 0.5,
+  "video_score": 0.42261904761904756,
+  "quality_ok": true,
+  "decision": "low_score",
+  "info": {
+    "fps": 30.0,
+    "frames": 895,
+    "duration": 29.833333333333332,
+    "width": 424,
+    "height": 240
+  },
+  "windows": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "brightness": 119.28264702690973,
+      "blur": 3344.475465239566,
+      "dark_fraction": 0.103515625,
+      "saturated_fraction": 0.0006442599826388888,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.5407539682539682
+    },
+    {
+      "start": 4.0,
+      "end": 8.0,
+      "brightness": 116.774169921875,
+      "blur": 3549.7212363900962,
+      "dark_fraction": 0.12095811631944445,
+      "saturated_fraction": 0.0,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.5112590187590187
+    },
+    {
+      "start": 8.0,
+      "end": 12.0,
+      "brightness": 115.18380398220486,
+      "blur": 3556.7971204335304,
+      "dark_fraction": 0.1297539605034722,
+      "saturated_fraction": 1.3563368055555555e-05,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.48173520923520935
+    },
+    {
+      "start": 12.0,
+      "end": 16.0,
+      "brightness": 116.35184054904514,
+      "blur": 3286.085203735917,
+      "dark_fraction": 0.1283230251736111,
+      "saturated_fraction": 0.0010511610243055555,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.4631240981240982
+    },
+    {
+      "start": 16.0,
+      "end": 20.0,
+      "brightness": 119.8616943359375,
+      "blur": 3280.1283394076204,
+      "dark_fraction": 0.10603841145833333,
+      "saturated_fraction": 0.000244140625,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.4503968253968254
+    },
+    {
+      "start": 20.0,
+      "end": 24.0,
+      "brightness": 119.95395236545139,
+      "blur": 3458.605280489097,
+      "dark_fraction": 0.1327243381076389,
+      "saturated_fraction": 0.0007934570312499999,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.44345238095238104
+    },
+    {
+      "start": 24.0,
+      "end": 28.0,
+      "brightness": 116.44847954644098,
+      "blur": 3648.6312135193084,
+      "dark_fraction": 0.1551174587673611,
+      "saturated_fraction": 4.747178819444444e-05,
+      "valid_frames": 16,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.4195634920634921
+    },
+    {
+      "start": 28.0,
+      "end": 29.833333333333332,
+      "brightness": 118.57733832465277,
+      "blur": 3621.2924900511166,
+      "dark_fraction": 0.1505126953125,
+      "saturated_fraction": 0.0013834635416666665,
+      "valid_frames": 8,
+      "usable": true,
+      "low_source_fps": false,
+      "score": 0.42261904761904756
+    }
+  ],
+  "events": [
+    {
+      "start": 0.0,
+      "end": 8.0,
+      "peak_score": 0.5407539682539682,
+      "status": "pending"
+    }
+  ],
+  "mode": "dense",
+  "warning": "Điểm nghi vấn chưa hiệu chuẩn; mốc thời gian chỉ để xem xét, chưa được kiểm định định vị hành vi.",
+  "elapsed_seconds": 2.653
+}

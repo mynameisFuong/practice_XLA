@@ -1,0 +1,74 @@
+[
+  {
+    "source": {
+      "id": "a1bcB0_RMiQ",
+      "title": "Camera Ghi Hình Bãi Giữ Xe Ban Đêm Quán Cháo Cối MT68",
+      "duration": 292,
+      "uploader": "Camera An Ninh 365 OFFICIAL",
+      "upload_date": "20190808",
+      "url": "https://www.youtube.com/watch?v=a1bcB0_RMiQ",
+      "local_path": "data/external_test/youtube_a1bcB0_RMiQ.mp4",
+      "label": "presumed_normal_requires_review",
+      "split": "external_holdout",
+      "note": "User supplied after v2 training; outdoor parking, not apartment basement; not for training or threshold selection",
+      "sha256": "bbc3de1827529a8edc7d76f4b130f7f6aa78da4e66c2be003519332213e236b2"
+    },
+    "baseline_score": 0.26306397306397306,
+    "baseline_threshold": 0.5,
+    "behavior_score": 0.5690311789512634,
+    "behavior_threshold": 0.5,
+    "instances": 10,
+    "coverage": {
+      "fps": 25.0,
+      "frames": 7301,
+      "duration": 292.04,
+      "width": 1280,
+      "height": 720,
+      "sampled_frames": 48,
+      "frames_with_pose": 35
+    },
+    "labeling": "Presumed normal from user; source/scene reviewed, no independently verified authorization labels",
+    "sampling": "6 sampled windows, not a complete event-level audit",
+    "used_for_training": false,
+    "dense_review_frames": 97,
+    "dense_processed_frames": 1169,
+    "dense_peak_behavior_score": 0.7618398666381836,
+    "annotated_video": "/Users/mynameisfuong/Documents/practice_ck/runtime/annotated/a1bcB0_RMiQ_behavior.mp4"
+  },
+  {
+    "source": {
+      "id": "5BSCCBLD-_M",
+      "title": "Lắp Đặt Camera Quan Sát Bãi Giữ Xe  -  KAMERA",
+      "duration": 59,
+      "uploader": "KAMERA HIKVISION",
+      "upload_date": "20190116",
+      "url": "https://www.youtube.com/watch?v=5BSCCBLD-_M",
+      "local_path": "data/external_test/youtube_5BSCCBLD-_M.mp4",
+      "label": "presumed_normal_requires_review",
+      "split": "external_holdout",
+      "note": "User supplied after v2 training; outdoor parking, not apartment basement; not for training or threshold selection",
+      "sha256": "d2772ba970031f35f9d0da13231a3f294e23233f605fbfd5997d3092c2da7240"
+    },
+    "baseline_score": 0.7220618085618085,
+    "baseline_threshold": 0.5,
+    "behavior_score": 0.5872945785522461,
+    "behavior_threshold": 0.5,
+    "instances": 10,
+    "coverage": {
+      "fps": 30.0,
+      "frames": 1771,
+      "duration": 59.03333333333333,
+      "width": 1280,
+      "height": 720,
+      "sampled_frames": 48,
+      "frames_with_pose": 32
+    },
+    "labeling": "Presumed normal from user; source/scene reviewed, no independently verified authorization labels",
+    "sampling": "6 sampled windows, not a complete event-level audit",
+    "used_for_training": false,
+    "dense_review_frames": 105,
+    "dense_processed_frames": 237,
+    "dense_peak_behavior_score": 0.8417335748672485,
+    "annotated_video": "/Users/mynameisfuong/Documents/practice_ck/runtime/annotated/5BSCCBLD-_M_behavior.mp4"
+  }
+]

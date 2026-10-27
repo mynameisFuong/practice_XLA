@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+tmp/
+.env
+.env.*
+!.env.example
+*.log
+*.part
+*.ytdl
+data/videos/
+data/external_test/*.mp4
+runtime/
+*.zip

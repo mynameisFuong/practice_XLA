@@ -1,0 +1,7 @@
+{
+  "summary": "5 kiểm thử pytest đều đạt; Streamlit AppTest mở ứng dụng, suy luận video minh họa và chuyển giao diện cư dân không có exception; CLI đã suy luận một video test thật và một video tổng hợp. Kiểm thử xác nhận chương trình hoạt động, không chứng minh độ chính xác ngoài tập test.",
+  "pytest_passed": 5,
+  "app_test": "artifacts/app_test.json",
+  "real_inference": "artifacts/real_video_prediction.json",
+  "synthetic_inference": "artifacts/demo_prediction.json"
+}

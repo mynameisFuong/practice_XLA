@@ -1,0 +1,178 @@
+{
+  "selected_model": "pose_only",
+  "variants": {
+    "pose_only": {
+      "validation": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1": 0.6666666666666666,
+        "accuracy": 0.6,
+        "roc_auc": 0.7000000000000001,
+        "average_precision": 0.7433333333333334,
+        "confusion_matrix": [
+          [
+            2,
+            3
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      },
+      "threshold": 0.5,
+      "epoch": 7,
+      "input_dimensions": 144,
+      "validation_loss": 1.9069345612067838,
+      "diagnostic_test": {
+        "precision": 0.5,
+        "recall": 0.6,
+        "f1": 0.5454545454545454,
+        "accuracy": 0.6153846153846154,
+        "roc_auc": 0.575,
+        "average_precision": 0.47090909090909094,
+        "confusion_matrix": [
+          [
+            5,
+            3
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    "interaction_only": {
+      "validation": {
+        "precision": 0.5,
+        "recall": 0.8,
+        "f1": 0.6153846153846154,
+        "accuracy": 0.5,
+        "roc_auc": 0.42000000000000004,
+        "average_precision": 0.519047619047619,
+        "confusion_matrix": [
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      },
+      "threshold": 0.44000000000000006,
+      "epoch": 1,
+      "input_dimensions": 57,
+      "validation_loss": 2.026877433109759,
+      "diagnostic_test": {
+        "precision": 0.45454545454545453,
+        "recall": 1.0,
+        "f1": 0.625,
+        "accuracy": 0.5384615384615384,
+        "roc_auc": 0.75,
+        "average_precision": 0.731111111111111,
+        "confusion_matrix": [
+          [
+            2,
+            6
+          ],
+          [
+            0,
+            5
+          ]
+        ]
+      }
+    },
+    "pose_and_interaction": {
+      "validation": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1": 0.6666666666666666,
+        "accuracy": 0.6,
+        "roc_auc": 0.58,
+        "average_precision": 0.7142857142857142,
+        "confusion_matrix": [
+          [
+            2,
+            3
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      },
+      "threshold": 0.4,
+      "epoch": 7,
+      "input_dimensions": 201,
+      "validation_loss": 1.9421993382007252,
+      "diagnostic_test": {
+        "precision": 0.4444444444444444,
+        "recall": 0.8,
+        "f1": 0.5714285714285714,
+        "accuracy": 0.5384615384615384,
+        "roc_auc": 0.6499999999999999,
+        "average_precision": 0.633131313131313,
+        "confusion_matrix": [
+          [
+            3,
+            5
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    }
+  },
+  "original_baseline": {
+    "n": 13,
+    "accuracy": 0.5384615384615384,
+    "precision": 0.42857142857142855,
+    "recall": 0.6,
+    "f1": 0.5,
+    "roc_auc": 0.65,
+    "average_precision": 0.5968253968253969,
+    "confusion_matrix": [
+      [
+        4,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ]
+  },
+  "original_baseline_validation": {
+    "threshold": 0.5,
+    "n": 10,
+    "accuracy": 0.7,
+    "precision": 0.625,
+    "recall": 1.0,
+    "f1": 0.7692307692307693,
+    "roc_auc": 0.48000000000000004,
+    "average_precision": 0.5192857142857142,
+    "confusion_matrix": [
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        5
+      ]
+    ]
+  },
+  "deployment_recommendation": "retain baseline; new MIL is experimental and has not surpassed baseline validation F1",
+  "feature_dimension": 201,
+  "frame_feature_dimension": 67,
+  "training_observed_videos": 31,
+  "training_empty_videos": 9,
+  "note": "Old test has already been inspected; all v2 test comparisons are exploratory diagnostics, not independent final accuracy. No person-level ground truth or calibration. External news clips excluded.",
+  "original_model_overwritten": false,
+  "approved_for_real_world": false
+}

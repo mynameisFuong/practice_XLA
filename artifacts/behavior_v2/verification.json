@@ -1,0 +1,15 @@
+{
+  "pytest_passed": 13,
+  "baseline_sha256": "4d8e0735e102dd3e7f827e83ee105923d6142ee069ef21d9aa8406fecd56d65d",
+  "baseline_preserved": true,
+  "external_sources_excluded_from_manifest": true,
+  "feature_frame_dimensions": 67,
+  "feature_window_dimensions": 201,
+  "sampled_feature_cache_files": 63,
+  "default_alarm": "baseline_scene_rule",
+  "mil_alarm_default_enabled": false,
+  "app_rich_mode_verified": true,
+  "pose_evidence_frames_in_tuoitre": 54,
+  "external_source_count": 2,
+  "deployment_recommendation": "retain baseline; new MIL is experimental and has not surpassed baseline validation F1"
+}
