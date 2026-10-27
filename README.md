@@ -1,5 +1,7 @@
 # Cảnh báo nghi vấn lấy trộm xe máy trong hầm chung cư
 
+**[Hướng dẫn sử dụng hệ thống](reports/HUONG_DAN_SU_DUNG_HE_THONG.md)** — cách đưa video vào, mô hình xử lý, output và ý nghĩa các chỉ số trên web.
+
 Bộ bài tập gồm mã nguồn Python, mô hình đã huấn luyện trên video thật thuộc UCF-Crime, giao diện Streamlit, báo cáo tiếng Việt và kết quả chạy. Mô hình nền hiện phân loại **Stealing / Normal ở cấp video**. Chưa có bằng chứng mô hình nhận dạng chính xác trộm **xe máy tại hầm chung cư**; báo cáo phân biệt rõ phần đã thực nghiệm và thiết kế mở rộng cần dữ liệu tại hầm.
 
 ## Chạy nhanh
@@ -21,11 +23,13 @@ Windows PowerShell: dùng `.venv\Scripts\Activate.ps1` thay lệnh `source`. M�
 
 ## Xem video với khung người và điểm cập nhật
 
+Ứng dụng **tự chụp ảnh khi xuất hiện khung vàng hoặc đỏ** (mặc định bật). Mỗi đợt nghi vấn lưu frame nguồn PNG, ảnh có khung JPG và JSON mức/thời gian/ID/điểm/hash tại `runtime/evidence`; đồng thời tạo cảnh báo pending. Gộp theo ID và giới hạn 10 giây giữa các ảnh, riêng chuyển vàng → đỏ chụp thêm ngay. Ảnh đã lưu vẫn còn nếu dừng xử lý. Xem [hướng dẫn chụp ảnh](reports/HUONG_DAN_DEMO.md).
+
 Đã bổ sung detector YOLOv8n pretrain trên COCO và ByteTrack để phát hiện/theo dõi người và xe máy. Mô hình này tạo khung đối tượng, không được huấn luyện nhận dạng trộm. Trọng số lưu tại `artifacts/yolov8n.pt`; nguồn và hash tại `artifacts/detector_source.json`.
 
-- Khung xanh: phát hiện người, kèm ID tạm thời và `det` (độ tin cậy phát hiện).
+- Khung xanh: đủ dữ liệu sơ bộ nhưng chưa có chuỗi dấu hiệu; vàng: nghi vấn; đỏ: nguy cơ cao cần xác minh. Xám là trạng thái chưa đủ dữ liệu, không được coi là an toàn.
 - `scene`: điểm nghi vấn của **cảnh**, từ ExtraTrees hiện có; không phải xác suất ăn trộm của người trong khung.
-- Khung đỏ `REVIEW`: quy tắc thử nghiệm khi điểm cảnh qua ngưỡng, chất lượng đạt kiểm tra sơ bộ và người được theo dõi ở gần xe máy phát hiện được ít nhất 2 giây. Khoảng cách là phép đo trên ảnh 2D, có thể nhầm khi che khuất.
+- Khung đỏ `HIGH RISK`: cần đồng thời điểm cao và chuỗi dấu hiệu cục bộ đủ thời gian: tay gần vùng xe, cúi người, chuyển động tay và gần xe. Khẩu trang hay nhìn quanh riêng lẻ không tăng mức. Chưa có bộ phân lớp bẻ khóa được huấn luyện; đây là chính sách thử nghiệm trên ảnh 2D.
 - Bốn giây đầu tích lũy dữ liệu; điểm cảnh cập nhật mỗi 4 giây bằng tối đa 48 giây quá khứ, không lấy frame tương lai. Khung người cập nhật ở FPS xử lý mục tiêu 8. Đây là phát luồng từ file, chưa phải kết nối RTSP; FPS thực đo hiển thị trên web.
 - Khi hoàn tất có video H.264 với khung và điểm để phát lại/tải xuống, cùng JSON theo dõi. Video kết quả không có âm thanh.
 
@@ -36,6 +40,18 @@ python scripts/annotate_video.py data/external_test/tuoitre_ham_chung_cu_2023073
 ```
 
 Nguồn kỹ thuật: [Ultralytics YOLOv8](https://docs.ultralytics.com/models/yolov8/), [tracking](https://docs.ultralytics.com/modes/track/), [Streamlit video và vấn đề codec MP4V](https://docs.streamlit.io/develop/api-reference/media/st.video). FFmpeg đi kèm thư viện `imageio-ffmpeg`, không cần cài FFmpeg hệ thống để phát video trong app.
+
+## Thử nhánh ResNet50 từ repo tham khảo
+
+Đã kiểm tra repo Dilaniu và bổ sung encoder ResNet50 với head MIL do dự án này tự huấn luyện. Trong chế độ theo dõi, bật tư thế và chọn **ResNet50 theo repo tham khảo (thử nghiệm)** tại **Nguồn đặc trưng và điểm đánh giá**. Trọng số ImageNet chính thức tải khoảng 98 MB vào runtime/models lần đầu, không đóng gói trong Git hoặc ZIP. [Báo cáo tích hợp](reports/TICH_HOP_DILANIU.md) ghi audit repo, kết quả và chính sách ba màu.
+
+Nhánh được chọn bằng validation có F1 validation 0,80, AUC test cũ 0,75 và F1 test cũ 0,545. Các số test chỉ là chẩn đoán trên tập đã xem, không phải độ chính xác thực tế. Hai video đối chứng bình thường giả định vẫn vượt ngưỡng MIL; giữ baseline làm mặc định và dùng nhánh mới để thử nghiệm. Repo tham khảo không cung cấp checkpoint trộm riêng và dự án này không sử dụng quy tắc khoảng cách khuôn mặt của notebook.
+
+```bash
+python scripts/extract_visual.py
+python scripts/train_behavior.py --visual
+python scripts/annotate_video.py data/external_test/tuoitre_ham_chung_cu_20230731.mp4 --behavior --backend resnet_mil --no-evidence --out runtime/annotated/resnet_demo.mp4
+```
 
 Hai video trong `data/demo` là hình vẽ sinh bằng code, chỉ kiểm tra luồng chương trình, **không dùng huấn luyện và không chứng minh độ chính xác**. Video thật không nằm trong file nén; tải bằng script bên dưới hoặc dùng video nhóm có quyền sử dụng.
 

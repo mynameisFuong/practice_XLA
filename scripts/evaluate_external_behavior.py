@@ -24,7 +24,7 @@ def main():
             sampling='6 sampled windows, not a complete event-level audit',used_for_training=False)
         if a.dense:
             output=ROOT/'runtime/annotated'/f"{source['id']}_behavior.mp4"
-            for update in stream_video(path,output,behavior=True,use_behavior_alarm=True):
+            for update in stream_video(path,output,behavior=True,use_behavior_alarm=True,capture_evidence=False):
                 if update['kind']=='complete':
                     report=update['report']
                     row.update(dense_review_frames=report['review_frames'],dense_processed_frames=report['processed_frames'],

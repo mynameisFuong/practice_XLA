@@ -12,6 +12,7 @@ import torch
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import f1_score,roc_auc_score,average_precision_score,confusion_matrix,precision_score,recall_score,accuracy_score
 from src.behavior_features import BEHAVIOR_VERSION,DESCRIPTOR_NAMES,DESCRIPTOR_DIM
+from src.visual_backbone import ENCODER_VERSION,ENCODER_DIM
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -23,16 +24,23 @@ def metrics(y,scores,threshold):
         confusion_matrix=confusion_matrix(y,pred,labels=[0,1]).tolist())
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--manifest',default='data/manifest.csv');parser.add_argument('--epochs',type=int,default=160);a=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--manifest',default='data/manifest.csv');parser.add_argument('--epochs',type=int,default=160)
+    parser.add_argument('--visual',action='store_true');a=parser.parse_args()
+    dimension=DESCRIPTOR_DIM+ENCODER_DIM if a.visual else DESCRIPTOR_DIM
+    feature_names=[f'resnet_{i:04d}' for i in range(ENCODER_DIM)]+DESCRIPTOR_NAMES if a.visual else DESCRIPTOR_NAMES
+    version=ENCODER_VERSION if a.visual else BEHAVIOR_VERSION
     torch.set_num_threads(2);np.random.seed(42);torch.manual_seed(42)
     m=pd.read_csv(ROOT/a.manifest)
     if m.video_id.duplicated().any() or m.sha256.duplicated().any():raise ValueError('Duplicate source across splits')
     bags=[];coverage=[]
     for r in m.to_dict('records'):
-        cache=ROOT/'data/behavior_features'/f"{r['video_id']}_{r['sha256'][:12]}_{BEHAVIOR_VERSION}_w6_fps2.npz"
+        cache=(ROOT/'data/visual_features'/f"{r['video_id']}_{r['sha256'][:12]}_{ENCODER_VERSION}.npz" if a.visual else
+               ROOT/'data/behavior_features'/f"{r['video_id']}_{r['sha256'][:12]}_{BEHAVIOR_VERSION}_w6_fps2.npz")
         z=np.load(cache);x=z['x'].astype(np.float32)
-        if x.ndim!=2 or x.shape[1]!=DESCRIPTOR_DIM or not np.isfinite(x).all():raise ValueError('Invalid features '+str(cache))
-        bags.append(x);info=json.loads(str(z['info']))
+        if x.ndim!=2 or x.shape[1]!=dimension or not np.isfinite(x).all():raise ValueError('Invalid features '+str(cache))
+        bags.append(x)
+        coverage_cache=(ROOT/'data/behavior_features'/f"{r['video_id']}_{r['sha256'][:12]}_{BEHAVIOR_VERSION}_w6_fps2.npz")
+        info=json.loads(str(np.load(coverage_cache)['info']))
         coverage.append(dict(video_id=r['video_id'],split=r['split'],label=r['label'],instances=len(x),**{k:info[k] for k in ['sampled_frames','frames_with_pose']}))
     train=np.flatnonzero((m.split=='train').to_numpy());val=np.flatnonzero((m.split=='val').to_numpy());test=np.flatnonzero((m.split=='test').to_numpy());labels=m.label.to_numpy()
     fit=[i for i in train if len(bags[i])]
@@ -42,7 +50,8 @@ def main():
     pose_indices=[i for i,n in enumerate(DESCRIPTOR_NAMES) if any(s in n for s in pose_tokens)]
     hoi_indices=[i for i in range(DESCRIPTOR_DIM) if i not in pose_indices]
     variants={'pose_only':pose_indices,'interaction_only':hoi_indices,'pose_and_interaction':list(range(DESCRIPTOR_DIM))}
-    out=ROOT/'artifacts/behavior_v2';out.mkdir(exist_ok=True)
+    if a.visual:variants={'resnet_only':list(range(ENCODER_DIM)),'resnet_pose_interaction':list(range(dimension))}
+    out=ROOT/'artifacts'/('resnet_v3' if a.visual else 'behavior_v2');out.mkdir(exist_ok=True)
     results={};bundles={};all_predictions={}
     for name,indices in variants.items():
         torch.manual_seed(42)
@@ -72,7 +81,7 @@ def main():
         threshold=float(max(np.linspace(.1,.9,81),key=lambda t:(f1_score(labels[val],v>=t,zero_division=0),-abs(t-.5))))
         results[name]=dict(validation=metrics(labels[val],v,threshold),threshold=threshold,epoch=best_epoch,
             input_dimensions=len(indices),validation_loss=best_loss)
-        bundles[name]=dict(version=BEHAVIOR_VERSION,input_dim=DESCRIPTOR_DIM,indices=indices,
+        bundles[name]=dict(version=version,input_dim=dimension,indices=indices,
             mean=scaler.mean_.astype(float).tolist(),scale=scaler.scale_.astype(float).tolist(),
             state=best_state,threshold=threshold,name=name,label_level='video',pool='max',
             instance_calibration='none',approved_for_real_world=False)
@@ -88,13 +97,14 @@ def main():
     baseline=json.loads((ROOT/'artifacts/metrics.json').read_text())
     result=dict(selected_model=selected,variants=results,original_baseline=baseline['test'][baseline['selected_model']],
         original_baseline_validation=baseline['validation'][baseline['selected_model']],
-        deployment_recommendation='retain baseline; new MIL is experimental and has not surpassed baseline validation F1',
-        feature_dimension=DESCRIPTOR_DIM,frame_feature_dimension=DESCRIPTOR_DIM//3,
+        deployment_recommendation='experimental only; requires independent event-level validation',
+        validation_f1_exceeds_baseline=bool(results[selected]['validation']['f1']>baseline['validation'][baseline['selected_model']]['f1']),
+        feature_dimension=dimension,frame_feature_dimension=DESCRIPTOR_DIM//3,
         training_observed_videos=len(fit),training_empty_videos=len(train)-len(fit),
         note='Old test has already been inspected; all v2 test comparisons are exploratory diagnostics, not independent final accuracy. No person-level ground truth or calibration. External news clips excluded.',
         original_model_overwritten=False,approved_for_real_world=False)
     (out/'metrics.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-    (out/'feature_schema.json').write_text(json.dumps(DESCRIPTOR_NAMES,indent=2))
+    (out/'feature_schema.json').write_text(json.dumps(feature_names,indent=2))
     print('Selected',selected);print(json.dumps(result,indent=2))
 
 if __name__=='__main__':main()

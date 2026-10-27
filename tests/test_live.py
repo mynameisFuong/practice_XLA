@@ -37,7 +37,7 @@ def test_untracked_person_never_accumulates_someone_elses_dwell():
     rule=ReviewRules(.5)
     for t in [0,1,2,3]:assert not rule.update([p,b],t,.9,True)[0]['review']
 
-def test_h264_playback_and_short_stream_tail(tmp_path):
+def test_h264_playback_and_short_stream_tail(tmp_path,monkeypatch):
     source=tmp_path/'source.avi';w=cv2.VideoWriter(str(source),cv2.VideoWriter_fourcc(*'MJPG'),8,(160,120))
     for i in range(8):
         frame=np.zeros((120,160,3),np.uint8);cv2.rectangle(frame,(i*5,20),(i*5+30,80),(150,180,200),-1);w.write(frame)
@@ -47,10 +47,32 @@ def test_h264_playback_and_short_stream_tail(tmp_path):
     cap=cv2.VideoCapture(str(playable));fourcc=int(cap.get(cv2.CAP_PROP_FOURCC));ok,frame=cap.read();cap.release()
     assert ok and ''.join(chr((fourcc>>(8*i))&255) for i in range(4)) in {'avc1','h264'}
     class NoPeople:
-        def detect(self,frame):return []
-    updates=list(stream_video(source,tmp_path/'annotated.mp4',detector=NoPeople()))
+        metadata={'weights':str(tmp_path/'custom_detector.pt'),'sha256':'test-hash'}
+        def detect(self,frame):
+            assert np.all(frame==255)
+            return []
+    def fixture_filter(frame,mode,denoise,sharpen):
+        assert not np.all(frame==255)
+        return np.full_like(frame,255),{'applied':['fixture_filter']}
+    original_update=CausalSceneScorer.update
+    def score_original(self,frame,timestamp):
+        assert not np.all(frame==255)
+        return original_update(self,frame,timestamp)
+    monkeypatch.setattr('src.live.enhance_frame',fixture_filter)
+    monkeypatch.setattr(CausalSceneScorer,'update',score_original)
+    selected=[]
+    def load_selected(weights):
+        selected.append(weights)
+        return NoPeople()
+    monkeypatch.setattr('src.live.PeopleMotorcycleDetector',load_selected)
+    weights=tmp_path/'custom_detector.pt'
+    updates=list(stream_video(source,tmp_path/'annotated.mp4',detector_weights=weights,capture_evidence=False))
+    assert selected==[weights]
+    assert updates[-1]['report']['detector']=='custom_detector.pt + ByteTrack'
+    assert updates[-1]['report']['detector_metadata']['sha256']=='test-hash'
     frame_updates=[u for u in updates if u['kind']=='frame']
     assert len(frame_updates)==8
+    assert all(not np.all(u['frame']==255) for u in frame_updates)
     assert all(u['scene_score'] is None for u in frame_updates)
     assert updates[-1]['kind']=='complete'
     assert updates[-1]['report']['windows'][0]['available_at']==pytest.approx(1)

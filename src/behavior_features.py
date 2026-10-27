@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 
 BEHAVIOR_VERSION='pose-hoi-v1'
+INTERACTION_EVIDENCE_VERSION=4
 JOINTS=list(range(5,17))
 FRAME_NAMES=([f'joint_{j}_{axis}' for j in JOINTS for axis in ['x','y']]
              +[f'joint_{j}_valid' for j in JOINTS]
@@ -38,6 +39,29 @@ def box_distance(a,b):
     return float(np.hypot(max(a[0]-b[2],b[0]-a[2],0),max(a[1]-b[3],b[1]-a[3],0)))
 
 def transformed(point,matrix):return matrix[:,:2]@np.asarray(point)+matrix[:,2]
+
+def lower_body_posture(pose):
+    """2D crouching proxy, not a learned action or intent classifier.
+
+    Require both hips/knees/ankles. Sitting and crouching may look alike;
+    the risk policy must require additional sustained vehicle interaction.
+    Keep these fields outside FRAME_NAMES so old trained heads stay compatible.
+    """
+    p=np.asarray(pose,float)
+    result=dict(lower_body_valid=False,crouching_proxy=False,knee_angle_degrees=None)
+    if p.shape!=(17,3):return result
+    if not (np.isfinite(p[11:17]).all() and (p[11:17,2]>=.4).all()):return result
+    angles=[];compressed=[]
+    for hip,knee,ankle in [(11,13,15),(12,14,16)]:
+        u=p[hip,:2]-p[knee,:2];v=p[ankle,:2]-p[knee,:2]
+        lengths=np.linalg.norm(u)*np.linalg.norm(v)
+        if min(np.linalg.norm(u),np.linalg.norm(v))<3:return result
+        angle=float(np.degrees(np.arccos(np.clip(np.dot(u,v)/lengths,-1,1))))
+        angles.append(angle)
+        compressed.append(abs(float(u[1]))/np.linalg.norm(u)<=.65)
+    result.update(lower_body_valid=True,knee_angle_degrees=float(np.mean(angles)),
+                  crouching_proxy=bool(max(angles)<=115 and all(compressed)))
+    return result
 
 class PoseEstimator:
     def __init__(self,weights):
@@ -192,8 +216,14 @@ class InteractionFeatures:
                 observed_seconds=float(timestamp-history[0][0]),observations=len(history),
                 pose_coverage=values['pose_coverage'],near_bike=near,
                 wrist_near_bike=contact,torso_lean=values['torso_lean'],
+                left_wrist_visible=bool(visible[9]),right_wrist_visible=bool(visible[10]),
                 hand_motion=max(values['left_wrist_speed'],values['right_wrist_speed']),
+                hand_motion_valid=bool(values['left_wrist_motion_valid'] or values['right_wrist_motion_valid']),
+                hand_region_seconds=values['hand_region_seconds']*4,
+                approach_count=int(approaches),bike_switch_count=int(switches),
+                head_valid=bool(values['head_valid']),head_offset_x=values['head_offset_x'],
                 bike_speed=values['bike_speed'],camera_motion_valid=motion_ok,
+                **lower_body_posture(pose),
                 keypoints=person.get('keypoints'),feature=descriptor))
         self.people={k:v for k,v in self.people.items() if timestamp-v['t']<=1.25}
         self.bikes={k:v for k,v in self.bikes.items() if timestamp-v['t']<=1.25}

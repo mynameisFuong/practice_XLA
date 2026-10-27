@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     target=ROOT/'BAI_NOP_CANH_BAO_TROM_XE.zip'
     entries=[ROOT/'README.md',ROOT/'requirements.txt',ROOT/'requirements-report.txt',ROOT/'requirements-lock.txt',ROOT/'app.py',ROOT/'.gitignore']
-    for folder in ['src','scripts','tests','reports','artifacts','data/features','data/behavior_features','data/demo']:
+    for folder in ['src','scripts','tests','reports','artifacts','model','data/features','data/behavior_features','data/visual_features','data/demo']:
         entries += [p for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     entries += [ROOT/'data'/name for name in ['manifest.csv','provenance.json','train.parquet','test.parquet']]
     entries.append(ROOT/'data/action_annotations_template.csv')

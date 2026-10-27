@@ -1,5 +1,59 @@
 # Hướng dẫn demo với video hầm chung cư
 
+Để đọc theo góc nhìn người sử dụng, xem **[Hướng dẫn sử dụng hệ thống](HUONG_DAN_SU_DUNG_HE_THONG.md)**: input, các bước xử lý, output và giải thích từng chỉ số trên web. Tài liệu dưới đây giữ các hướng dẫn demo và xử lý lỗi kỹ thuật.
+
+## Video 240p, người nhỏ hoặc bị che
+
+Chọn model bổ sung YOLO11 và **Cách chạy detector → Người nhỏ / bị che: toàn ảnh 1280 + 4 vùng phóng lớn**. Bấm Phân tích để tạo video mới; video đã xuất giữ nguyên khung cũ. Chế độ phóng vùng chạy chậm hơn và không tái tạo được chi tiết đã mất. Xem [hướng dẫn người nhỏ](PHAT_HIEN_NGUOI_NHO.md). Chờ 4 giây chỉ áp dụng cho điểm cảnh, detector chạy từ đầu.
+
+## Bộ lọc ảnh và tư thế ngồi thấp
+
+Chọn chế độ theo dõi, tại **Tiền xử lý cho phát hiện và tư thế** chọn **Tự động khi tối hoặc tương phản thấp**; có thể bật **Lọc nhiễu nhẹ (bilateral)**. Giữ bật trích xuất tư thế. Bảng kết quả có thêm ngồi thấp/co gối ước lượng, góc gối và cờ đủ dữ liệu. Thiếu tư thế tin cậy hiển thị xám thay vì xanh. Xem [cách hoạt động, giới hạn và lệnh chạy đối chiếu](BO_LOC_VA_TU_THE.md). Tư thế ngồi thấp chỉ phối hợp với thao tác tay–xe kéo dài, không tự kết luận trộm; hiện chưa có detector khẩu trang/mũ chuyên dụng.
+
+## Thử model trong thư mục model
+
+Chọn **Theo dõi trực tiếp trên video**, tại **Model phát hiện người và xe** chọn **Model bổ sung: yolo_behavior_model.pt (YOLO11 COCO)**. Chọn video, giữ nhánh chấm điểm hành vi mong muốn rồi bấm **Phân tích**. Video kết quả, ID theo dõi, ba màu và chụp ảnh tự động đều sử dụng detector đã chọn. JSON tải về ghi tên checkpoint và SHA-256 trong `detector_metadata` để biết chính xác model nào đã chạy.
+
+Để so sánh, chạy lại cùng video với **YOLOv8n hiện tại**, giữ nguyên các tùy chọn hành vi và nguồn điểm. Không dùng số lượng khung hoặc điểm tin cậy người để kết luận độ chính xác phát hiện trộm.
+
+Checkpoint bổ sung hiện khai báo 80 lớp COCO, tác vụ `detect`, có `person` và `motorcycle`, chưa có lớp `theft`/`lock-breaking`. Metadata train lưu đường dẫn `coco.yaml`. Do đó tích hợp này thử thay bộ phát hiện đối tượng, không thay bộ phân lớp hành vi. Xem [chi tiết tích hợp](TICH_HOP_MODEL_BO_SUNG.md).
+
+Chạy bằng Terminal:
+
+```bash
+python scripts/annotate_video.py data/external_test/youtube_5BSCCBLD-_M.mp4 --detector-weights model/yolo_behavior_model.pt --behavior --backend scene --out runtime/annotated/custom_model.mp4
+```
+
+Nếu web đang chạy phiên bản cũ, dừng bằng `Ctrl+C` rồi chạy lại Streamlit. Lựa chọn detector chỉ có trong chế độ theo dõi; phân tích tổng quan vẫn dùng baseline cấp video.
+
+## Bản mới ResNet50 và ba mức xanh vàng đỏ
+
+Tải lại web, chọn video thật, bật **Trích xuất tư thế và tương tác người–xe**. Tại **Nguồn đặc trưng và điểm đánh giá**, chọn **ResNet50 theo repo tham khảo (thử nghiệm)** để thử nhánh mới. Có thể giữ Baseline toàn cảnh hoặc chọn MIL tư thế để đối chiếu. Lần đầu ResNet50 tải khoảng 98 MB trọng số chính thức; các lần sau dùng cache trên máy. [Báo cáo tích hợp và kết quả](TICH_HOP_DILANIU.md).
+
+- **Xanh lá An toàn:** đủ dữ liệu sơ bộ và chưa ghi nhận chuỗi dấu hiệu cần xem xét; không bảo đảm không có trộm.
+- **Vàng Nghi vấn:** điểm và tương tác cần quan sát, hoặc nhiều dấu hiệu cục bộ kết hợp đủ thời gian.
+- **Đỏ Nguy hiểm:** điểm cao hơn và chuỗi thao tác tay gần xe, cúi người, chuyển động tay kéo dài; là nguy cơ cao cần xác minh, chưa nhận dạng được riêng hành động bẻ khóa.
+
+Khẩu trang hoặc nhìn quanh đơn lẻ không làm tăng mức. Proxy đổi hướng đầu chỉ đóng góp cùng tiếp cận lặp lại và ở gần xe. Vàng giữ tín hiệu 1 giây, đỏ 2 giây; hạ mức sau 2 giây. Xám là trạng thái chưa đủ điểm/theo dõi/chất lượng, không phải một lớp hành vi thứ tư. Bảng web và JSON ghi mức cùng lý do. Ba mức hiện là lớp quy tắc, chưa phải bộ phân lớp ba nhãn có kiểm định độc lập.
+
+## Tự chụp ảnh tại thời điểm có dấu hiệu nghi vấn
+
+Trong **Theo dõi trực tiếp trên video**, giữ bật **Tự chụp ảnh khi xuất hiện khung vàng hoặc đỏ**. Khi quy tắc đang chọn đánh dấu một người cần xem xét, hệ thống tự lưu và tạo cảnh báo pending trong Sổ cảnh báo. Không cần bấm lưu thủ công.
+
+Mỗi lần ghi nhận gồm:
+
+- `original.png`: đúng frame nguồn đã giải mã, giữ độ phân giải nguồn và chưa vẽ lên ảnh; không lấy frame đầu video thay cho frame nghi vấn.
+- `annotated.jpg`: ảnh có khung người, điểm đánh giá và thời gian để xem nhanh.
+- `metadata.json`: camera, tên/hash video, chỉ số frame từ 0, thời gian trong video, ID theo dõi, tọa độ khung trên ảnh nguồn, nguồn điểm, điểm/ngưỡng và hash các ảnh.
+
+Các file nằm tại `runtime/evidence/<run_id>/<evidence_id>/`. PNG giữ nguyên pixel đã giải mã; file video gốc vẫn được giữ riêng. Hash phục vụ kiểm tra tệp có thay đổi, không biến kết quả mô hình thành kết luận đã xác minh.
+
+Các khung dương liên tiếp của cùng ID được gộp thành một đợt, chụp ảnh đầu đợt; khoảng ngắt tối đa 3 giây vẫn được gộp. Hai ảnh cùng mức của cùng ID cách nhau tối thiểu 10 giây; riêng nâng vàng lên đỏ chụp ảnh mới ngay để giữ đúng thời điểm tăng mức. Nếu nhiều người cùng được đánh dấu lần đầu trong một frame, dùng chung ảnh và ghi đủ ID. Metadata lưu mức tại lúc chụp, thời điểm quan sát cuối và điểm cao nhất của đợt; ảnh đã chụp giữ nguyên.
+
+Sau khi chạy xong có mục **Ảnh ghi nhận tự động** để xem/tải ảnh. Có thể mở **Sổ cảnh báo**, chọn mã sự kiện để xem ảnh, tải PNG/JPG/JSON và xác minh confirmed hoặc false_alarm. Ảnh đã ghi vẫn được giữ nếu bấm Dừng xử lý giữa chừng. Chạy lại cùng video tạo một lượt phân tích mới, có run_id riêng.
+
+Nếu không có khung vàng hoặc đỏ thì không tự tạo ảnh nghi vấn. Chế độ Phân tích tổng quan chỉ chấm điểm cả video nên không tự xác định người/frame cần chụp. Mọi cảnh báo tự tạo ban đầu là pending, chưa xác nhận người trong ảnh đang trộm xe. Các file runtime và video cá nhân không được đưa lên Git.
+
 ## Lỗi unexpected keyword argument behavior
 
 Thông báo `stream_video() got an unexpected keyword argument 'behavior'` xuất hiện khi giao diện mới gọi tham số hành vi nhưng tiến trình Streamlit còn giữ hàm của phiên bản cũ trong RAM. Mã mới tự kiểm tra chữ ký hàm và nạp lại module khi phát hiện lệch phiên bản; lỗi khởi tạo cũng được đưa vào phần xử lý lỗi của giao diện.
@@ -18,7 +72,7 @@ Mở `http://localhost:8502`. Lỗi này không yêu cầu huấn luyện lại 
 
 Phiên bản mới có checkbox **Trích xuất tư thế và tương tác người–xe**. Khi bật, ứng dụng hiển thị khung xương và các đặc trưng: vị trí/góc khớp, chuyển động cổ tay, tay gần vùng xe, thời gian tương tác và chuyển động người–xe. Tốc độ hiển thị mục tiêu là 4 FPS, đặc trưng cập nhật 2 lần/giây. Tỷ lệ khớp qua ngưỡng dựa trên confidence của pose model, không phải xác minh nhìn rõ bằng người gán nhãn.
 
-**Dùng điểm MIL hành vi cho cảnh báo thử nghiệm** mặc định tắt. Giữ tắt khi muốn dùng quy tắc baseline; bật chỉ để nghiên cứu head MIL học từ nhãn cả video. Head này chưa vượt baseline trên validation và còn báo nhầm trên cả hai video bãi xe bạn cung cấp. Xem [báo cáo nâng cấp và số đo thật](NANG_CAP_HANH_VI.md). Điểm MIL không phải xác suất người đó ăn trộm.
+Chọn **MIL tư thế (thử nghiệm)** trong Nguồn đặc trưng và điểm đánh giá để nghiên cứu head V2 học bằng nhãn cả video. Head V2 chưa vượt baseline trên validation và còn báo nhầm trên hai video bãi xe bạn cung cấp. Điểm MIL không phải xác suất người đó ăn trộm. [Báo cáo V2](NANG_CAP_HANH_VI.md) mô tả thí nghiệm trước nhánh ResNet50.
 
 Hai video mới đã tải vào `data/external_test` và xuất hiện trong danh sách chọn:
 
@@ -38,7 +92,7 @@ Hai video được giữ ngoài train/validation. Khi dùng nhãn bình thườn
 5. Bấm **Phân tích**. Vùng **Đang theo dõi và chấm điểm** hiển thị frame đang xử lý với khung người, ID tạm thời và điểm. Chờ đủ 4 giây đầu để có điểm cảnh, sau đó điểm cập nhật mỗi 4 giây.
 6. Khi xử lý xong, xem phần **Phát lại video có khung và điểm theo thời gian** hoặc tải video/JSON. Nút **Dừng xử lý** hủy lần chạy hiện tại; chỉ lần chạy hoàn tất mới có video đầu ra đầy đủ.
 
-Khung xanh chỉ có nghĩa phát hiện người. `det` là độ tin cậy phát hiện người; `scene` là điểm nghi vấn của toàn cảnh từ mô hình hiện có. Khung đỏ `REVIEW` chỉ xuất hiện khi điểm cảnh đạt ngưỡng, chất lượng đạt kiểm tra sơ bộ và người đứng gần xe máy được detector phát hiện liên tục ít nhất 2 giây. Đây là quy tắc thử nghiệm, chưa có nhãn/dữ liệu để coi là xác suất trộm của từng người. Một người đang lấy xe hợp lệ cũng có thể thỏa quy tắc này. Không hạ ngưỡng để ép các video hiện màu đỏ.
+Màu khung dùng chính sách ba mức ở đầu hướng dẫn. `det` là độ tin cậy phát hiện người; `scene` là điểm toàn cảnh; điểm MIL/ResNet50 là điểm thử nghiệm từ nhãn video. Người đang lấy xe hợp lệ cũng có thể thỏa dấu hiệu nghi vấn. Không hạ ngưỡng để ép các video hiện màu đỏ.
 
 Detector YOLOv8n/ByteTrack đã được cài và trọng số đã có trên máy hiện tại. Trên máy mới, chạy thêm sau khi cài requirements:
 

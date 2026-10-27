@@ -1,0 +1,13 @@
+{
+  "repo": "https://github.com/Dilaniu/Theft-Detection-Project-using-OpenCV",
+  "commit": "c4383d497a3a51dbda385121a6a52d925d8b401f",
+  "snapshot_files": [
+    "LICENSE",
+    "Bike Theft Detection using Yolov5.ipynb",
+    "README.md"
+  ],
+  "single_face_with_detection": false,
+  "two_faces_close_coordinates": false,
+  "two_faces_far_coordinates": true,
+  "finding": "Result changes with spatial face distance, not observed vehicle tampering. Any non-empty detection list passes the object precondition. ResNet features are defined but unused in the final decision."
+}

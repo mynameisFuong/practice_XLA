@@ -1,0 +1,13 @@
+{
+  "app_test_passed": true,
+  "backend": "resnet_mil",
+  "risk_counts": {
+    "safe": 306,
+    "suspicious": 0,
+    "danger": 0,
+    "unknown": 132
+  },
+  "automatic_snapshots": 0,
+  "real_world_accuracy_verified": false,
+  "source": "presumed-normal user parking clip; operational DB isolated"
+}

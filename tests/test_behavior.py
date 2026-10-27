@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.behavior_features import InteractionFeatures,FRAME_NAMES,DESCRIPTOR_DIM
+from src.behavior_features import InteractionFeatures,FRAME_NAMES,DESCRIPTOR_DIM,lower_body_posture
 
 def person(pose=None,shift=0):
     d=dict(class_id=0,track_id=1,bbox=[20+shift,10,60+shift,100],confidence=.9)
@@ -8,6 +8,21 @@ def person(pose=None,shift=0):
     return d
 
 def bike(track_id=2,shift=0):return dict(class_id=3,track_id=track_id,bbox=[50+shift,50,130+shift,110],confidence=.8)
+
+def test_crouch_proxy_distinguishes_extended_legs_and_masks_missing_joints():
+    pose=np.zeros((17,3))
+    for hip,knee,ankle,x in [(11,13,15,40),(12,14,16,60)]:
+        pose[hip]=[x,30,.9];pose[knee]=[x,60,.9];pose[ankle]=[x,90,.9]
+    assert lower_body_posture(pose)['lower_body_valid']
+    assert not lower_body_posture(pose)['crouching_proxy']
+    for hip,knee,ankle,x in [(11,13,15,40),(12,14,16,60)]:
+        pose[hip]=[x,60,.9];pose[knee]=[x+25,65,.9];pose[ankle]=[x+20,95,.9]
+    assert lower_body_posture(pose)['crouching_proxy']
+    pose[15,2]=.1
+    assert not lower_body_posture(pose)['lower_body_valid']
+    assert not lower_body_posture(pose)['crouching_proxy']
+    pose[15]=[float('nan'),95,.9]
+    assert not lower_body_posture(pose)['lower_body_valid']
 
 def test_occluded_pose_is_masked_not_a_wrist_at_origin():
     engine=InteractionFeatures();frame=np.full((120,160,3),100,np.uint8)

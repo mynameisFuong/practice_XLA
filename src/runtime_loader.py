@@ -7,11 +7,13 @@ the mismatch by silently disabling requested behavior features.
 import importlib
 import inspect
 
-REQUIRED_STREAM_ARGUMENTS={'behavior','use_behavior_alarm'}
+REQUIRED_STREAM_ARGUMENTS={'behavior','use_behavior_alarm','camera_id','capture_evidence','risk_backend','detector_weights',
+                           'preprocessing','denoise','sharpen','detector_profile'}
 
 def get_stream_video():
     module=importlib.import_module('src.live')
-    if not REQUIRED_STREAM_ARGUMENTS.issubset(inspect.signature(module.stream_video).parameters):
+    if (getattr(module,'STREAM_API_VERSION',0)<5
+            or not REQUIRED_STREAM_ARGUMENTS.issubset(inspect.signature(module.stream_video).parameters)):
         importlib.invalidate_caches()
         module=importlib.reload(module)
     if not REQUIRED_STREAM_ARGUMENTS.issubset(inspect.signature(module.stream_video).parameters):

@@ -1,0 +1,10 @@
+{
+  "pytest_passed": 22,
+  "app_test_passed": true,
+  "automatic_captures": 2,
+  "original_frame_pixels_match_source": true,
+  "source_frame_index": 540,
+  "video_time_seconds": 18.0,
+  "test_database_isolated": true,
+  "note": "Function test on presumed-normal user video; model alarms here are not evidence of theft."
+}

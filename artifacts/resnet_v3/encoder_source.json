@@ -1,0 +1,7 @@
+{
+  "version": "resnet50-imagenet-v2-person-context-v1",
+  "url": "https://download.pytorch.org/models/resnet50-11ad3fa6.pth",
+  "weights": "IMAGENET1K_V2",
+  "sha256": "11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca",
+  "purpose": "Frozen person-context embeddings; head must be trained separately; not face recognition"
+}

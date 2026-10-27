@@ -1,0 +1,334 @@
+{
+  "method": "Replay saved detections and pose through updated policy, not a new detector inference or accuracy evaluation.",
+  "source_report": "runtime/annotated/544226dc38c0a21638ba7f7b_1793094061944150000.json",
+  "policy": {
+    "version": "three-level-observable-v3",
+    "yellow_score_threshold": 0.5,
+    "red_score_threshold": 0.8,
+    "yellow_hold_seconds": 1.0,
+    "red_hold_seconds": 2.0,
+    "downgrade_hold_seconds": 2.0,
+    "require_pose": true,
+    "green_requires_complete_action_visibility": true,
+    "red_requires": "near vehicle >=4s, reliable pose, wrist near vehicle >=2s, leaning or crouching, relative wrist movement, high score",
+    "calibrated": false,
+    "trained_three_class_model": false,
+    "mask_used": false,
+    "helmet_used": false,
+    "lock_breaking_detector_available": false
+  },
+  "frames": [
+    {
+      "timestamp": 16.76,
+      "scene_score": 0.34957154882154884,
+      "motorcycles": 5,
+      "old_people": [
+        {
+          "bbox": [
+            710.5371704101562,
+            206.5541534423828,
+            849.6497802734375,
+            434.47833251953125
+          ],
+          "class_id": 0,
+          "confidence": 0.6625887155532837,
+          "track_id": 38,
+          "keypoints": [
+            [
+              762.3453979492188,
+              263.14483642578125,
+              0.9059080481529236
+            ],
+            [
+              771.0364990234375,
+              254.16024780273438,
+              0.9379252195358276
+            ],
+            [
+              763.2454223632812,
+              255.2210235595703,
+              0.5543360114097595
+            ],
+            [
+              798.8511352539062,
+              255.51763916015625,
+              0.9106259346008301
+            ],
+            [
+              774.698974609375,
+              256.7864685058594,
+              0.10641917586326599
+            ],
+            [
+              830.4210205078125,
+              308.0589294433594,
+              0.9785375595092773
+            ],
+            [
+              771.3013916015625,
+              300.7910461425781,
+              0.7604112029075623
+            ],
+            [
+              841.3515014648438,
+              385.0747375488281,
+              0.9410344362258911
+            ],
+            [
+              754.5562744140625,
+              356.5611877441406,
+              0.32211944460868835
+            ],
+            [
+              795.8714599609375,
+              387.5481262207031,
+              0.8969546556472778
+            ],
+            [
+              744.722412109375,
+              349.36700439453125,
+              0.3696913719177246
+            ],
+            [
+              801.9322509765625,
+              418.0517578125,
+              0.7085664868354797
+            ],
+            [
+              765.8615112304688,
+              408.4922790527344,
+              0.41076481342315674
+            ],
+            [
+              755.0704956054688,
+              439.59063720703125,
+              0.26709455251693726
+            ],
+            [
+              723.7901000976562,
+              428.52484130859375,
+              0.09185279905796051
+            ],
+            [
+              769.3167724609375,
+              485.5345458984375,
+              0.0651407390832901
+            ],
+            [
+              748.1380615234375,
+              471.5256042480469,
+              0.029219144955277443
+            ]
+          ],
+          "near_motorcycle": true,
+          "dwell_seconds": 2.76,
+          "scene_score": 0.34957154882154884,
+          "review": false,
+          "behavior_score": 0.16627025604248047,
+          "visual_score": null,
+          "behavior_observed_at": 16.76,
+          "evidence": {
+            "timestamp": 16.76,
+            "observed_seconds": 2.7600000000000016,
+            "observations": 6,
+            "pose_coverage": 0.5,
+            "near_bike": true,
+            "wrist_near_bike": false,
+            "torso_lean": 0.153995624904154,
+            "hand_motion": 0.13249467259948233,
+            "hand_motion_valid": true,
+            "hand_region_seconds": 0.0,
+            "approach_count": 1,
+            "bike_switch_count": 1,
+            "head_valid": true,
+            "head_offset_x": -0.34963170977695845,
+            "bike_speed": 0.01240844842249879,
+            "camera_motion_valid": true,
+            "lower_body_valid": false,
+            "crouching_proxy": false,
+            "knee_angle_degrees": null
+          },
+          "head_motion_proxy": false,
+          "risk_level": "safe",
+          "risk_label": "An toàn · chưa ghi nhận dấu hiệu",
+          "risk_reasons": [
+            "Chưa ghi nhận chuỗi dấu hiệu cần xem xét"
+          ],
+          "assessment_ready": true,
+          "preprocessing": {
+            "mode": "off",
+            "denoise": true,
+            "sharpen": true,
+            "source_brightness": 149.01198302469135,
+            "source_contrast": 50.1161862952845,
+            "applied": [
+              "bilateral",
+              "mild_unsharp"
+            ]
+          }
+        }
+      ],
+      "replayed_people": [
+        {
+          "bbox": [
+            710.5371704101562,
+            206.5541534423828,
+            849.6497802734375,
+            434.47833251953125
+          ],
+          "class_id": 0,
+          "confidence": 0.6625887155532837,
+          "track_id": 38,
+          "keypoints": [
+            [
+              762.3453979492188,
+              263.14483642578125,
+              0.9059080481529236
+            ],
+            [
+              771.0364990234375,
+              254.16024780273438,
+              0.9379252195358276
+            ],
+            [
+              763.2454223632812,
+              255.2210235595703,
+              0.5543360114097595
+            ],
+            [
+              798.8511352539062,
+              255.51763916015625,
+              0.9106259346008301
+            ],
+            [
+              774.698974609375,
+              256.7864685058594,
+              0.10641917586326599
+            ],
+            [
+              830.4210205078125,
+              308.0589294433594,
+              0.9785375595092773
+            ],
+            [
+              771.3013916015625,
+              300.7910461425781,
+              0.7604112029075623
+            ],
+            [
+              841.3515014648438,
+              385.0747375488281,
+              0.9410344362258911
+            ],
+            [
+              754.5562744140625,
+              356.5611877441406,
+              0.32211944460868835
+            ],
+            [
+              795.8714599609375,
+              387.5481262207031,
+              0.8969546556472778
+            ],
+            [
+              744.722412109375,
+              349.36700439453125,
+              0.3696913719177246
+            ],
+            [
+              801.9322509765625,
+              418.0517578125,
+              0.7085664868354797
+            ],
+            [
+              765.8615112304688,
+              408.4922790527344,
+              0.41076481342315674
+            ],
+            [
+              755.0704956054688,
+              439.59063720703125,
+              0.26709455251693726
+            ],
+            [
+              723.7901000976562,
+              428.52484130859375,
+              0.09185279905796051
+            ],
+            [
+              769.3167724609375,
+              485.5345458984375,
+              0.0651407390832901
+            ],
+            [
+              748.1380615234375,
+              471.5256042480469,
+              0.029219144955277443
+            ]
+          ],
+          "near_motorcycle": true,
+          "dwell_seconds": 2.76,
+          "scene_score": 0.34957154882154884,
+          "review": false,
+          "behavior_score": 0.16627025604248047,
+          "visual_score": null,
+          "behavior_observed_at": 16.76,
+          "evidence": {
+            "timestamp": 16.76,
+            "observed_seconds": 2.7600000000000016,
+            "observations": 6,
+            "pose_coverage": 0.5,
+            "near_bike": true,
+            "wrist_near_bike": false,
+            "torso_lean": 0.153995624904154,
+            "hand_motion": 0.13249467259948233,
+            "hand_motion_valid": true,
+            "hand_region_seconds": 0.0,
+            "approach_count": 1,
+            "bike_switch_count": 1,
+            "head_valid": true,
+            "head_offset_x": -0.34963170977695845,
+            "bike_speed": 0.01240844842249879,
+            "camera_motion_valid": true,
+            "lower_body_valid": false,
+            "crouching_proxy": false,
+            "knee_angle_degrees": null
+          },
+          "head_motion_proxy": false,
+          "risk_level": "unknown",
+          "risk_label": "Chưa đủ dữ liệu",
+          "risk_reasons": [
+            "Bị che/thiếu khớp chân hoặc cổ tay; chưa đủ quan sát để hiển thị xanh"
+          ],
+          "assessment_ready": false,
+          "preprocessing": {
+            "mode": "off",
+            "denoise": true,
+            "sharpen": true,
+            "source_brightness": 149.01198302469135,
+            "source_contrast": 50.1161862952845,
+            "applied": [
+              "bilateral",
+              "mild_unsharp"
+            ]
+          },
+          "assessment_diagnostics": [
+            "Điểm dưới ngưỡng vàng",
+            "Không đủ điểm hai chân để đánh giá ngồi thấp",
+            "Không quan sát đủ hai cổ tay",
+            "Thời gian gần xe chưa đủ 3 giây cho nhánh tương tác",
+            "Chưa quan sát được tay gần vùng xe",
+            "Chuyển động đầu 2D chưa đạt điều kiện; không phải nhận dạng hướng nhìn"
+          ]
+        }
+      ]
+    },
+    {
+      "timestamp": 29.52,
+      "scene_score": 0.3589537037037037,
+      "motorcycles": 1,
+      "old_people": [],
+      "replayed_people": []
+    }
+  ]
+}

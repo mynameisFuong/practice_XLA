@@ -1,0 +1,26 @@
+[
+  {
+    "id": "a1bcB0_RMiQ",
+    "title": "Camera Ghi Hình Bãi Giữ Xe Ban Đêm Quán Cháo Cối MT68",
+    "url": "https://www.youtube.com/watch?v=a1bcB0_RMiQ",
+    "baseline_score": 0.263063973063973,
+    "resnet_score": 0.8500287532806396,
+    "threshold": 0.41000000000000003,
+    "instances": 10,
+    "label": "presumed_normal",
+    "used_for_training": false,
+    "sampling": "6 sampled windows; not event-level accuracy"
+  },
+  {
+    "id": "5BSCCBLD-_M",
+    "title": "Lắp Đặt Camera Quan Sát Bãi Giữ Xe  -  KAMERA",
+    "url": "https://www.youtube.com/watch?v=5BSCCBLD-_M",
+    "baseline_score": 0.7220618085618085,
+    "resnet_score": 0.577227771282196,
+    "threshold": 0.41000000000000003,
+    "instances": 10,
+    "label": "presumed_normal",
+    "used_for_training": false,
+    "sampling": "6 sampled windows; not event-level accuracy"
+  }
+]
